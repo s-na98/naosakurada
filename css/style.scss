@@ -1,0 +1,1136 @@
+@charset "UTF-8";
+@use "mixin";
+
+
+html {
+    font-size: 100%;
+
+}
+
+body {
+    background-color: #F3F1EE;
+    color: #222;
+    font-family: "Noto Sans JP", sans-serif;
+    // font-weight: 300;
+    letter-spacing: 0.04em;
+
+}
+
+a {
+    text-decoration: none;
+    color: #222;
+    display: inline-block;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: bottom;
+}
+
+$section-space: 160px;
+$item-space: 100px;
+
+
+// -----------------------------------------------
+// 共通クラス
+// -----------------------------------------------
+.container {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 0 3%;
+}
+
+.sec-title {
+    font-weight: normal;
+    font-size: 1.75rem;
+    letter-spacing: 0.05em;
+    position: relative;
+    display: inline-block;
+}
+
+.sec-title::before {
+    content: "";
+    height: 1px;
+    width: 100px;
+    background-color: #CD5638;
+    position: absolute;
+    top: 50%;
+    left: 130%;
+    transform: translateY(-50%);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+
+    .logo {
+        a {
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+    }
+
+    .logo:hover {
+        a {
+            color: #CD5638;
+        }
+    }
+}
+
+.pc-only {
+    display: block;
+
+    @include mixin.sp {
+        display: none;
+    }
+}
+
+.sp-only {
+    display: none;
+
+    @include mixin.sp {
+        display: block;
+    }
+}
+
+// -----------------------------------------------
+// header
+// -----------------------------------------------
+.main-header {
+    // margin-top: 10px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .header-inner {
+        width: 100%;
+        height: 70px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #F3F1EE;
+        z-index: 10;
+
+        .header-top {
+            // 「共通クラス」にすでにコードあり
+            max-width: 1200px;
+            margin-inline: auto;
+            padding: 0 3%;
+            height: 100%;
+            align-items: center;
+
+
+            .navi {
+                display: flex;
+                justify-content: space-between;
+                gap: 40px;
+                font-size: 0.875rem;
+
+                li {
+                    a {
+                        position: relative;
+                    }
+
+                    a::before {
+                        background: #CD5638;
+                        content: '';
+                        width: 100%;
+                        height: 1px;
+                        position: absolute;
+                        left: 0;
+                        bottom: -4px;
+                        transform-origin: center top;
+                        // ↑transform で拡大・縮小・回転をするとき、「どこを基準に変形するか」 を決めるもの
+                        transform: scale(0, 1);
+                        transition: transform .3s;
+                    }
+
+                    a:hover::before {
+                        transform-origin: center top;
+                        transform: scale(1, 1);
+                    }
+                }
+
+
+            }
+
+            .btn-trigger,
+            .mask {
+                display: none;
+            }
+
+            @include mixin.sp {
+                .btn-trigger {
+                    display: block;
+                }
+
+                .mask {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .fv {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        flex: 1;
+        padding-top: 18vh;
+
+        .role {
+            order: 1;
+            font-size: 0.875rem;
+        }
+
+        h1 {
+            order: 2;
+            font-size: 4.5rem;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            letter-spacing: 0.05em;
+            color: black;
+        }
+
+        .sub {
+            order: 3;
+            font-size: 1.255rem;
+        }
+
+        .lead {
+            order: 4;
+            margin-top: 40px;
+        }
+
+        @include mixin.sp {
+            padding-top: 25vh;
+            padding-bottom: 40px;
+
+            h1 {
+                font-size: 3.5rem;
+            }
+
+            .lead {
+                order: 4;
+                margin-top: 60px;
+            }
+        }
+
+    }
+}
+
+@include mixin.sp {
+    .main-header {
+        .header-inner {
+            .header-top {
+
+                .navi-wrapper {
+                    position: fixed;
+                    top: 0;
+                    // ⭐️
+                    right: -300px;
+                    width: 300px;
+                    height: 100vh;
+                    z-index: 20;
+                    // ⭐️
+                    opacity: 0;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    transition: all 0.5s;
+                    background-color: #393939;
+
+                    .navi {
+                        flex-direction: column;
+                        gap: 30px;
+                        justify-content: flex-start;
+                        margin: 80px 20px;
+                        font-size: 1rem;
+
+                        li {
+                            a {
+                                color: #F4F4F4;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .btn-trigger {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            width: 30px;
+            height: 35px;
+            cursor: pointer;
+            z-index: 20;
+
+        }
+
+        .btn-trigger span {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background-color: #222;
+            border-radius: 4px;
+        }
+
+        .btn-trigger,
+        .btn-trigger span {
+            display: inline-block;
+            transition: all .5s;
+            box-sizing: border-box;
+        }
+
+        .btn-trigger span:nth-of-type(1) {
+            top: 22%;
+        }
+
+        .btn-trigger span:nth-of-type(2) {
+            top: 50%;
+        }
+
+        .btn-trigger span:nth-of-type(3) {
+            top: 78%;
+        }
+
+        .mask {
+            display: none;
+            transition: all 0.5s;
+        }
+
+    }
+
+    .main-header.open {
+
+        .btn-trigger span:nth-of-type(1),
+        .btn-trigger span:nth-of-type(2),
+        .btn-trigger span:nth-of-type(3) {
+            background-color: #F4F4F4;
+        }
+
+        .btn-trigger span:nth-of-type(1) {
+            transform: translateY(10px) rotate(45deg);
+        }
+
+        .btn-trigger span:nth-of-type(2) {
+            opacity: 0;
+        }
+
+        .btn-trigger span:nth-of-type(3) {
+            transform: translateY(-10px) rotate(-45deg);
+        }
+
+        .mask {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: 0.6;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .header-inner {
+            .header-top {
+                .navi-wrapper {
+                    right: 0;
+                    opacity: 1;
+
+                    ul {
+                        li {
+                            animation: fadeIn 0.8s ease 0.45s 1 normal backwards;
+                        }
+
+                        li:nth-child(1) {
+                            animation-delay: 0.1s;
+                        }
+
+                        li:nth-child(2) {
+                            animation-delay: 0.22s;
+                        }
+
+                        li:nth-child(3) {
+                            animation-delay: 0.34s;
+                        }
+
+                        li:nth-child(4) {
+                            animation-delay: 0.46s;
+                        }
+
+                        li:nth-child(5) {
+                            animation-delay: 0.58s;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+        /* 下から上がってくる */
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+// -----------------------------------------------
+// works
+// -----------------------------------------------
+#works {
+    margin-top: $section-space;
+
+    .works-list {
+        margin-top: $item-space;
+
+        .work-item {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 100px;
+            margin-top: 100px;
+            align-items: start;
+
+            .work-image {
+                overflow: hidden;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+                width: 100%;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    // display: block;
+                    transition: transform 0.6s ease;
+                }
+            }
+
+            .work-image:hover img {
+                transform: scale(1.06);
+            }
+
+
+            .work-content {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+
+                .work-title {
+                    font-weight: normal;
+                    font-size: 1.5rem;
+                }
+
+                .work-category {
+                    display: flex;
+                    gap: 8px;
+                    font-family: "Noto Sans JP";
+                }
+
+                .category-tag {
+                    font-size: 0.75rem;
+                    color: rgba(205, 86, 56, 0.8);
+                    font-weight: 500;
+                }
+
+                .work-skill,
+                .work-url,
+                .work-date {
+                    font-size: 0.75rem;
+                }
+
+
+                .work-url {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+
+                .work-url:hover {
+                    opacity: 0.7;
+                }
+
+                .work-link {
+                    display: inline-block;
+                    position: relative;
+                    margin-left: auto;
+                    padding-left: 60px;
+                    font-size: 0.875rem;
+                    transition: color 0.3s ease;
+
+                }
+
+                .work-link::before,
+                .work-link::after {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    height: 1px;
+                    background-color: #333;
+                    transform: translateY(-50%);
+                    transition: background-color 0.3s ease, transform 0.3s ease;
+                }
+
+                .work-link::before {
+                    width: 40px;
+                }
+
+                .work-link::after {
+                    width: 14px;
+                    transform-origin: right center;
+                    transform: translate(27px, 0px) rotate(25deg);
+                }
+
+                /*  ホバー */
+                .work-link:hover {
+                    color: #CD5638;
+                }
+
+                .work-link:hover::before,
+                .work-link:hover::after {
+                    background-color: #CD5638;
+                }
+
+            }
+
+
+            @include mixin.sp {
+                grid-template-columns: 1fr;
+                gap: 40px;
+
+                .work-content {
+
+                    .work-title {
+                        font-size: 1.25rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// -----------------------------------------------
+// How I Work
+// -----------------------------------------------
+#how {
+    margin-top: $section-space;
+
+    .work-flow {
+        margin-top: 40px;
+
+        .flow-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 32px;
+            padding: 40px 0;
+            border-bottom: 1px solid #ddd;
+
+            .flow-content {
+                .flow-number {
+                    font-size: 1.125rem;
+                }
+
+                h3 {
+                    font-weight: normal;
+                    letter-spacing: 0.05em;
+                    font-size: 1.125rem;
+                }
+
+                p {
+                    margin-top: 32px;
+                    line-height: 1.8;
+                }
+            }
+
+        }
+
+        .flow-item:last-child {
+            border-bottom: none;
+        }
+
+        @include mixin.sp {
+            .flow-item {
+                grid-template-columns: 30px 1fr;
+            }
+
+            .flow-content {
+                p {
+                    line-height: 1.6;
+                }
+            }
+        }
+    }
+}
+
+// -----------------------------------------------
+// Skills
+// -----------------------------------------------
+#skills {
+    margin-top: $section-space;
+
+    .skill-category {
+
+
+        .skill-category-title {
+            margin-top: 40px;
+        }
+
+        .skill-item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 40px;
+            margin-bottom: 48px;
+            margin-top: 30px;
+
+            .skill-list li {
+                position: relative;
+                padding-left: 16px;
+                margin-bottom: 0.8em;
+            }
+
+            .skill-list li::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0.7em;
+                width: 4px;
+                height: 4px;
+                background: #333;
+                border-radius: 50%;
+            }
+
+            @include mixin.sp {
+                grid-template-columns: 1fr;
+                gap: 20px;
+
+                .skill-name {
+                    font-size: 1.125rem;
+                }
+            }
+
+
+        }
+    }
+
+}
+
+// -----------------------------------------------
+// About
+// -----------------------------------------------
+#about {
+    margin-top: $section-space;
+    padding: 80px 0;
+    background-color: #393939;
+
+    .sec-title {
+        color: #F4F4F4;
+    }
+
+
+    .about-inner {
+        display: flex;
+        gap: 100px;
+        align-items: center;
+
+
+        .about-text {
+            width: 60%;
+            color: #F4F4F4;
+            display: flex;
+            flex-direction: column;
+            line-height: 2;
+
+            .about-name {
+                font-size: 20px;
+                margin-bottom: 16px;
+            }
+        }
+
+        .about-img {
+            width: 40%;
+            max-width: 250px;
+
+            img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+        }
+    }
+
+
+    @include mixin.sp {
+        .about-inner {
+            flex-direction: column-reverse;
+            gap: 40px;
+            margin-top: 40px;
+
+            .about-text {
+                width: 100%;
+                font-size: 0.875rem;
+            }
+
+            .about-img {
+                width: 100%;
+            }
+        }
+
+    }
+
+}
+
+
+
+// -----------------------------------------------
+// Contact
+// -----------------------------------------------
+#contact {
+    margin-top: 80px;
+
+    p {
+        margin-top: 40px;
+    }
+
+    .mail {
+        margin-top: 40px;
+        font-size: 2.25rem;
+        font-weight: 500;
+        color: #CD5638;
+        transition: 0.3s;
+
+        &:hover {
+            color: transparent;
+            -webkit-text-stroke: 1px #CD5638;
+        }
+    }
+
+    .sns {
+        margin-top: 40px;
+        display: flex;
+        gap: 20px;
+
+        img {
+            width: 38px;
+        }
+    }
+}
+
+// -----------------------------------------------
+// footer
+// -----------------------------------------------
+footer {
+    margin-top: $section-space;
+    padding-bottom: 40px;
+
+
+    .page-top-btn {
+        padding: 30px 0;
+        text-align: right;
+    }
+
+    /* ボタン本体 */
+    .page-top {
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    /* 基準になる要素（ここが超重要！） */
+    .page-top span {
+        position: relative;
+        display: block;
+        width: 60px;
+        height: 60px;
+    }
+
+    /* 矢印 */
+    .page-top span::before {
+        content: "";
+        position: absolute;
+        top: 23px;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #000;
+        border-width: 2px 2px 0 0;
+        transform: rotate(-45deg);
+    }
+
+    /* 丸 */
+    .page-top span::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 60px;
+        height: 60px;
+        border: 2px solid #000;
+        border-radius: 50%;
+    }
+
+
+    .copy-right {
+        font-size: 0.75rem;
+        text-align: right;
+
+        @include mixin.sp {
+            font-size: 0.625rem;
+        }
+    }
+}
+
+
+// -------------------------------------------------
+// WORKS   各実績ページ
+// -------------------------------------------------
+.works-header {
+    .header-top {
+        margin-top: 20px;
+    }
+}
+
+.works-detail {
+    margin-top: $section-space;
+
+    @include mixin.sp {
+        margin-top: 60px;
+    }
+
+    .works-mv {
+
+        .top {
+            .top-content {
+                display: grid;
+                grid-template-columns: 1fr 460px;
+                gap: 80px;
+
+                .title {
+                    font-weight: normal;
+                    font-size: 1.75rem;
+                }
+
+                p {
+                    line-height: 1.8;
+                }
+            }
+
+            .top-img {
+                max-width: 760px;
+                margin-left: auto;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+                margin-top: 80px;
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            @include mixin.sp {
+                .top-content {
+                    grid-template-columns: 1fr;
+                    gap: 40px;
+
+                    .title {
+                        font-size: 1.625rem;
+                    }
+
+                    p {
+                        line-height: 1.8;
+                    }
+                }
+
+                .top-img {
+                    margin-inline: auto;
+                }
+            }
+
+        }
+    }
+
+    .works-info {
+
+        .info-inner {
+            display: grid;
+            grid-template-columns: 1fr 460px;
+            gap: 80px;
+            margin-top: $item-space;
+
+            .info-list {
+                display: grid;
+                grid-template-columns: 120px 1fr;
+                row-gap: 20px;
+
+
+                dt {
+                    color: #666;
+                }
+
+                dd {
+                    margin: 0;
+                }
+
+                .date {
+                    font-size: 0.75rem;
+                }
+
+                a {
+                    text-decoration: underline;
+                }
+
+                a:hover {
+                    opacity: 0.7;
+                }
+            }
+
+            .info-text {
+                max-width: 420px;
+                line-height: 2;
+            }
+
+        }
+
+        @include mixin.sp {
+            .info-inner {
+                grid-template-columns: 1fr;
+                gap: 60px;
+
+                .info-list {
+                    a {
+                        font-size: 0.875rem;
+                    }
+                }
+
+                .info-text {
+                    line-height: 1.8;
+                }
+            }
+        }
+
+    }
+
+    .inner-title {
+        font-weight: normal;
+        font-size: 1.75rem;
+        letter-spacing: 0.05em;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 30px;
+    }
+
+    .inner-title::before {
+        content: "";
+        height: 1px;
+        width: 50px;
+        background-color: #CD5638;
+        position: absolute;
+        bottom: -30px;
+        left: 0;
+    }
+
+
+    .works-gallery {
+        margin-top: 120px;
+
+        .back-ground {
+            background-color: #393939;
+            padding-top: 60px;
+            padding-bottom: 60px;
+
+            .inner-title {
+                color: #F4F4F4;
+            }
+        }
+
+        .gallery-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 3%;
+        }
+
+
+
+        .gallery-images {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            margin-top: 60px;
+
+
+            .avanti-item img {
+                width: 100%;
+                height: auto;
+            }
+
+
+
+            .original-items {
+                display: flex;
+                justify-content: space-between;
+
+                .left {
+                    width: 45%;
+                }
+
+                .right {
+                    width: 45%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+
+
+            }
+        }
+
+        @include mixin.sp {
+            .gallery-images {
+                gap: 20px;
+            }
+        }
+
+
+    }
+
+    .works-description {
+        margin-top: 120px;
+    }
+
+    .description-inner {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 2%;
+
+        .description-text {
+            margin-top: 40px;
+
+            p {
+                line-height: 1.9;
+                margin-bottom: 24px;
+            }
+        }
+
+        .sp-design {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: $item-space;
+
+            img {
+                width: 100%;
+                height: auto;
+                display: block;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        .inner-image {
+            display: flex;
+            justify-content: space-between;
+
+
+            img {
+                width: 100%;
+                max-width: 48%;
+                height: auto;
+            }
+        }
+
+        .summary {
+            width: 80%;
+            margin-top: 30px;
+        }
+
+        .wireframe {
+            margin-top: 60px;
+        }
+
+        @include mixin.sp {
+            .description-inner {
+                .description-text {
+                    p {
+                        line-height: 1.8;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .learnings {
+        margin-top: 120px;
+    }
+
+    .works-mockup {
+        margin-top: 120px;
+
+        .mockup-item {
+            text-align: center;
+        }
+
+        .mockup-caption {
+            text-align: left;
+            margin-top: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @include mixin.sp {
+            .mockup-item {
+                .mockup-img {
+                    width: 100%;
+                    height: 230px;
+                    overflow: hidden;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+.works-detail-footer {
+    text-align: right;
+
+    .top-btn {
+        transition: color 0.3s ease;
+    }
+
+    .top-btn:hover {
+        color: #CD5638;
+    }
+
+    .copy-right {
+        margin-top: 100px;
+
+    }
+
+    @include mixin.sp {
+        margin-top: 80px;
+        padding-bottom: 20px;
+
+        .copy-right {
+            margin-top: 60px;
+        }
+    }
+}
